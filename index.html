@@ -1,0 +1,95 @@
+from IPython.core.display import display, HTML
+
+html_code = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Transport Cost Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .container { background: #f4f4f4; padding: 20px; border-radius: 10px; width: 50%; margin: auto; }
+        input, select, button { margin: 10px; padding: 10px; width: 80%; }
+        button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Food Transport Cost Calculator</h2>
+
+        <label>Weight (lbs):</label>
+        <input type="number" id="weight" placeholder="Enter weight"><br>
+
+        <label>Agency:</label>
+        <select id="agency">
+            <option value="Backpack - ARPA">Backpack - ARPA</option>
+            <option value="Backpack">Backpack</option>
+            <option value="Community Partnership Events">Community Partnership Events</option>
+            <option value="Emergency Food">Emergency Food</option>
+            <option value="FSD Marketplace">FSD Marketplace</option>
+            <option value="Mobile Pantry">Mobile Pantry</option>
+            <option value="Produce Pantry">Produce Pantry</option>
+            <option value="School Pantry - ARPA">School Pantry - ARPA</option>
+            <option value="School Pantry">School Pantry</option>
+            <option value="Temp. Summer Distributions">Temp. Summer Distributions</option>
+            <option value="Together Tour">Together Tour</option>
+        </select><br>
+
+        <label>Region:</label>
+        <select id="region">
+            <option value="North Coastal">North Coastal</option>
+            <option value="North Inland">North Inland</option>
+            <option value="Central">Central</option>
+            <option value="East">East</option>
+            <option value="South">South</option>
+        </select><br>
+
+        <button onclick="calculateCost()">Calculate Cost</button>
+
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        const regionDistances = {
+            "North Coastal": 27.7,
+            "North Inland": 46.6,
+            "Central": 19.2,
+            "East": 60.5,
+            "South": 28.3
+        };
+
+        function calculateCost() {
+            const weight = parseFloat(document.getElementById("weight").value);
+            const region = document.getElementById("region").value;
+            const distance = regionDistances[region];
+
+            if (!distance) {
+                document.getElementById("result").innerHTML = "Please select a valid region.";
+                return;
+            }
+
+            const fixedCost = 2607;
+            const variableCost = 0; // Placeholder for future use
+            const totalCost = fixedCost + variableCost;
+            const costPerMile = totalCost / distance;
+
+            let output = `Region: ${region}<br>`;
+            output += `Distance: ${distance} miles<br>`;
+            output += `Fixed Cost: $${fixedCost.toFixed(2)}<br>`;
+            output += `Total Cost: $${totalCost.toFixed(2)}<br>`;
+            output += `Cost per mile: $${costPerMile.toFixed(2)}`;
+
+            if (!isNaN(weight) && weight > 0) {
+                const costPerPoundPerMile = totalCost / (weight * distance);
+                output += `<br>Cost per pound per mile: $${costPerPoundPerMile.toFixed(4)}`;
+            }
+
+            document.getElementById("result").innerHTML = output;
+        }
+    </script>
+</body>
+</html>
+"""
+
+display(HTML(html_code))
